@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import userService from "../services/userService.js";
 import { findUserByUsername, createUser } from "../services/userService.js";
 
 

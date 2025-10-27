@@ -18,3 +18,11 @@ export const deleteTask = async (id) => {
     return await prisma.task.delete({ where: { id } });
 }
 
+export const getAllTasksByUserId = async (userId) => {
+    return await prisma.task.findMany({ where: { userId } });
+}
+
+export const getTaskByFilter = async (filter) => {
+    return await prisma.task.findMany({ where: filter });
+}
+
