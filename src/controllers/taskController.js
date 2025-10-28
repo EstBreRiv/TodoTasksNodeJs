@@ -78,6 +78,37 @@ export const getTaskByPriority = async (req, res) => {
   }
 };
 
+export const getTask = async (req, res) => {
+  try {
+    const userId = req.user.id; // viene del JWT
+    const filters = { userId };
+
+    // Extraer query params de la URL (ej: ?priority=High&dueDate=2025-10-30)
+    const { priority, dueDate, status } = req.query;
+
+    // Agregar condiciones dinámicamente
+    if (priority) filters.priority = priority;
+    if (dueDate) filters.dueDate = new Date(dueDate); // Prisma requiere formato Date válido
+    if (status) filters.status = status;
+
+    // 🔹 Llamar al servicio
+    const filteredTasks = await getTaskByFilter(filters);
+
+    // Validar si no hay resultados
+    if (filteredTasks.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No tasks found with the specified filters" });
+    }
+
+    // Retornar las tareas encontradas
+    res.status(200).json({ tasks: filteredTasks });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export const getTaskByDate = async (req, res) => {
   try {
     const { dueDate } = req.params;
@@ -142,4 +173,5 @@ export default {
   getTaskByDate,
   updateTaskById,
   patchTaskById,
+  getTask,
 };
