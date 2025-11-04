@@ -4,7 +4,7 @@ import { PrismaClient } from "../generated/prisma/index.js";
 const prisma = new PrismaClient();
 
 export const findUserByUsername = async (email) => {
-    return await prisma.user.findUnique({ where: { email } });
+    return await prisma.user.findUnique({ where: { email }, include: { role: true } });
 }
 
 export const createUser = async (data) => {
