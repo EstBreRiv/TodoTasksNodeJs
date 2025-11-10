@@ -8,6 +8,10 @@ import {
 
 export const addTask = async (req, res) => {
   try {
+    if (!req.body) {
+      return res.status(400).json({ error: "Missing request body" });
+    }
+
     const { title, description, priority, dueDate } = req.body;
     const userId = req.user.id;
 
@@ -15,19 +19,23 @@ export const addTask = async (req, res) => {
       return res.status(400).json({ error: "Title and description is needed" });
     }
 
+    const dateParsed = new Date(dueDate);
+
     const newTask = await createTask({
       title,
       description,
       userId: userId,
       priority,
-      dueDate,
+      dueDate: dateParsed,
     });
 
-    res
-      .status(201)
-      .json({ message: "Task created succecsfully", task: newTask });
+    res.status(201).json({
+      success: true,
+      message: "Task created successfully",
+      data: newTask,
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 };
 
@@ -50,6 +58,11 @@ export const getAllTasks = async (req, res) => {
 export const getTaskById = async (req, res) => {
   try {
     const { id } = req.params;
+
+    if (isNaN(parseInt(id))) {
+      return res.status(400).json({ message: "Invalid task ID" });
+    }
+
     const task = await findTaskById(parseInt(id));
 
     if (!task) {
@@ -103,7 +116,6 @@ export const getTask = async (req, res) => {
 
     // Retornar las tareas encontradas
     res.status(200).json({ tasks: filteredTasks });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -163,7 +175,6 @@ export const patchTaskById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 export default {
   addTask,

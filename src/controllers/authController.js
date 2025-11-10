@@ -8,6 +8,11 @@ import prisma, {
 export const register = async (req, res) => {
   console.log("Register request body:", req.body);
   try {
+
+    if (!req.body) {
+      return res.status(400).json({ message: "Missing request body" });
+    }
+
     const { email, password, name, role } = req.body;
 
     //Valida usuario y contraseña
@@ -45,6 +50,10 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
+    if (!req.body) {
+      return res.status(400).json({ message: "Missing request body" });
+    }
+
     const { email, password } = req.body;
 
     // Validate user and password

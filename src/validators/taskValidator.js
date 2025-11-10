@@ -9,6 +9,8 @@ export const taskValidationRules = [
   body("priority").isIn(["Low", "Medium", "High"]).withMessage("Invalid priority"),
 
   body("dueDate").isDate().withMessage("Invalid due date"),
+  
+
 ];
 
 export const validateTask = (req, res, next) => {

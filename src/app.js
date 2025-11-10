@@ -21,7 +21,9 @@ app.use("/", routes);
 app.use("/auth", authRoutes);
 app.use("/tasks", taskRoutes);
 
-
+app.use((req, res, next) => {
+  res.status(404).json({ message: "Route not found" });
+});
 
 // Middleware de manejo de errores
 app.use(errorHandler);

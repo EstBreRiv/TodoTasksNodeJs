@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +24,11 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
+    "@vitest/ui": "^4.0.8",
+    "jest": "^30.2.0",
     "nodemon": "^3.1.10",
-    "prisma": "^6.17.1"
+    "prisma": "^6.17.1",
+    "supertest": "^7.1.4",
+    "vitest": "^4.0.8"
   }
 }

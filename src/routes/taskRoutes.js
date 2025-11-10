@@ -10,7 +10,7 @@ router.post("/", verifyToken, limiter, taskValidationRules, validateTask, taskCo
 
 router.get("/filter", verifyToken, limiter, taskController.getTask);
 
-router.get("/getTasks", verifyToken, authorizeRole("admin"), limiter, taskController.getAllTasks);
+router.get("/getTasks", verifyToken, authorizeRole("Admin"), limiter, taskController.getAllTasks);
 
 router.get("/:id", verifyToken, limiter, taskController.getTaskById);
 

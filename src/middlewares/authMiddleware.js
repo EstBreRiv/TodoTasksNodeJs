@@ -34,6 +34,9 @@ export const verifyToken = async (req, res, next) => {
 
 export const authorizeRole = (...roles) => {
  return (req, res, next) => {
+
+    console.log("User role:", req.user ? req.user.role : "No user");
+
     if (!req.user) {
       return res.status(401).json({ message: "No autenticado" });
     }
