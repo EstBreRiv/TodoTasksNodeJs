@@ -8,8 +8,7 @@ import prisma, {
 export const register = async (req, res) => {
   console.log("Register request body:", req.body);
   try {
-
-    if (!req.body) {
+    if (!req.body || Object.keys(req.body).length === 0) {
       return res.status(400).json({ message: "Missing request body" });
     }
 
@@ -41,7 +40,7 @@ export const register = async (req, res) => {
       roleId: selectedRole.id,
     });
 
-    res.status(201).json({ message: "Usuario creado", user: newUser });
+    res.status(201).json(newUser);
   } catch (error) {
     console.error("Error during registration:", error);
     res.status(500).json({ message: "Internal server error" });
