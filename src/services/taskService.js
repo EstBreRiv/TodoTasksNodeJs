@@ -1,29 +1,62 @@
-import { PrismaClient } from "../generated/prisma/index.js";
+export class TaskService {
+  constructor(prisma) {
+    this.prisma = prisma;
+  }
 
-const prisma = new PrismaClient();
+  async findTaskById(id) {
+    try
+    {
+        return await this.prisma.task.findUnique({ where: { id } });
+    } catch (error) {
+        throw new Error(`Failed to find task with id ${id}: ${error.message}`);
+    }
+  }
 
-export const findTaskById = async (id) => {
-    return await prisma.task.findUnique({ where: { id } });
+  async createTask(data) {
+    try {
+        return await this.prisma.task.create({ data });
+    } catch (error) {
+        throw new Error(`Failed to create task: ${error.message}`);
+    }
+  }
+
+  async updateTask(id, data) {
+    try {
+        return await this.prisma.task.update({ where: { id }, data });
+    } catch (error) {
+        throw new Error(`Failed to update task with id ${id}: ${error.message}`);
+    }
+  }
+
+  async deleteTask(id) {
+    try {
+        return await this.prisma.task.delete({ where: { id } });
+    } catch (error) {
+        throw new Error(`Failed to delete task with id ${id}: ${error.message}`);
+    }
+  }
+
+  async getAllTasksByUserId(userId) {
+    try {
+        return await this.prisma.task.findMany({ where: { userId } });
+    } catch (error) {
+        throw new Error(`Failed to get tasks for user with id ${userId}: ${error.message}`);
+    }
+  }
+
+  async getTaskByFilter(filter) {
+    try {
+        return await this.prisma.task.findMany({ where: filter });
+    } catch (error) {
+        throw new Error(`Failed to get tasks with filter ${JSON.stringify(filter)}: ${error.message}`);
+    }
+  }
 }
 
-export const createTask = async (data) => {
-    return await prisma.task.create({ data });
+export class DatabaseError extends Error {
+  constructor(message, originarlError) {
+    super(message);
+    this.name = 'DatabaseError';
+    this.originalError = originarlError; 
+  }
 }
-
-export const updateTask = async (id, data) => {
-    return await prisma.task.update({ where: { id }, data });
-}
-
-export const deleteTask = async (id) => {
-    return await prisma.task.delete({ where: { id } });
-}
-
-export const getAllTasksByUserId = async (userId) => {
-    return await prisma.task.findMany({ where: { userId } });
-}
-
-export const getTaskByFilter = async (filter) => {
-    return await prisma.task.findMany({ where: filter });
-}
-
-

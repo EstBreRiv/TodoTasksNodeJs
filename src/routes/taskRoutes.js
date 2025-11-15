@@ -1,5 +1,5 @@
 import express from "express";
-import taskController from "../controllers/taskController.js";
+import {taskController} from "../controllers/taskController.js";
 import { verifyToken, authorizeRole } from "../middlewares/authMiddleware.js";
 import { taskValidationRules, validateTask } from "../validators/taskValidator.js";
 import { limiter } from "../middlewares/rateLimiter.js";
